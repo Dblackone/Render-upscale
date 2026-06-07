@@ -8,6 +8,7 @@ env/
 
 # Environment
 .env
+*.env
 
 # Generated images (keep folder structure, not content)
 images/raw-renders/*

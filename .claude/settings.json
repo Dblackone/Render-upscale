@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "nanobanana": {
+      "type": "http",
+      "url": "https://mcp.pixa.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${PIXA_API_KEY}"
+      }
+    }
+  }
+}
