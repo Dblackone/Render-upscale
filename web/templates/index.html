@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Render Enhancement — Photorealistic Visualization System</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+
+  <header>
+    <h1>AI Render Optimization</h1>
+    <p class="tagline">Transform architectural renders into ultra-photorealistic visualizations</p>
+  </header>
+
+  <main>
+
+    <!-- Upload Panel -->
+    <section id="upload-panel" class="panel active">
+      <h2>Upload Your Render</h2>
+      <div
+        id="drop-zone"
+        class="drop-zone"
+        ondragover="handleDragOver(event)"
+        ondragleave="handleDragLeave(event)"
+        ondrop="handleDrop(event)"
+        onclick="document.getElementById('file-input').click()"
+      >
+        <div class="drop-icon">⬆</div>
+        <p>Drag and drop your architectural render here</p>
+        <p class="hint">or click to select a file</p>
+        <p class="formats">JPG · PNG · WEBP · up to 20MB</p>
+        <input type="file" id="file-input" accept="image/*" onchange="handleFileSelect(event)" hidden />
+      </div>
+      <div id="upload-status" class="status hidden"></div>
+    </section>
+
+    <!-- Assessment Panel -->
+    <section id="assessment-panel" class="panel hidden">
+      <h2>Image Assessment</h2>
+      <div class="two-col">
+        <div>
+          <h3>Original Render</h3>
+          <img id="original-preview" src="" alt="Original render" />
+        </div>
+        <div>
+          <h3>Assessment Report</h3>
+          <pre id="assessment-text" class="assessment-box"></pre>
+        </div>
+      </div>
+      <button class="btn" onclick="showPreferences()">Continue to Enhancement Options →</button>
+    </section>
+
+    <!-- Preferences Panel -->
+    <section id="preferences-panel" class="panel hidden">
+      <h2>Enhancement Preferences</h2>
+      <div id="questions-container"></div>
+      <div class="field-group">
+        <label for="additional-input">Additional instructions (optional)</label>
+        <textarea id="additional-input" rows="3" placeholder="e.g. Add a water feature reflection, make it a winter scene, emphasise the timber facade..."></textarea>
+      </div>
+      <button class="btn" id="generate-btn" onclick="generateImage()">Generate Enhanced Image</button>
+    </section>
+
+    <!-- Result Panel -->
+    <section id="result-panel" class="panel hidden">
+      <h2>Enhanced Result</h2>
+      <div class="two-col">
+        <div>
+          <h3>Original Render</h3>
+          <img id="result-original" src="" alt="Original render" />
+        </div>
+        <div>
+          <h3>Enhanced Output</h3>
+          <div id="result-placeholder" class="generating-box">
+            <div class="spinner"></div>
+            <p>Generating ultra-photorealistic image…</p>
+            <p class="hint">This typically takes 30–60 seconds</p>
+          </div>
+          <img id="result-enhanced" src="" alt="Enhanced render" class="hidden" />
+        </div>
+      </div>
+      <div id="result-actions" class="hidden">
+        <a id="download-btn" class="btn" download>Download Final Image</a>
+        <button class="btn btn-secondary" onclick="resetToUpload()">Process Another Image</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>AI Render Optimization &amp; Photorealistic Visualization System</p>
+    <p class="hint">Geometry preserved · Professional quality · Presentation ready</p>
+  </footer>
+
+  <script>
+    let currentSessionId = null;
+    let currentQuestions = [];
+    let originalImageSrc = null;
+
+    // ── Drag & Drop ──────────────────────────────────────────────────────────
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      document.getElementById('drop-zone').classList.add('dragover');
+    }
+
+    function handleDragLeave(e) {
+      document.getElementById('drop-zone').classList.remove('dragover');
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      document.getElementById('drop-zone').classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (file) uploadFile(file);
+    }
+
+    function handleFileSelect(e) {
+      const file = e.target.files[0];
+      if (file) uploadFile(file);
+    }
+
+    // ── Upload & Analyse ─────────────────────────────────────────────────────
+
+    async function uploadFile(file) {
+      setStatus('Analysing your render with Claude Vision…', 'loading');
+
+      // Show preview immediately
+      originalImageSrc = URL.createObjectURL(file);
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const res = await fetch('/upload', { method: 'POST', body: formData });
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.detail || 'Upload failed');
+        }
+        const data = await res.json();
+        currentSessionId = data.session_id;
+        currentQuestions = data.questions || [];
+        showAssessment(data.assessment_text);
+      } catch (err) {
+        setStatus('Error: ' + err.message, 'error');
+      }
+    }
+
+    function setStatus(msg, type) {
+      const el = document.getElementById('upload-status');
+      el.textContent = msg;
+      el.className = 'status ' + type;
+      el.classList.remove('hidden');
+    }
+
+    // ── Assessment Panel ─────────────────────────────────────────────────────
+
+    function showAssessment(text) {
+      document.getElementById('original-preview').src = originalImageSrc;
+      document.getElementById('assessment-text').textContent = text;
+      showPanel('assessment-panel');
+    }
+
+    function showPreferences() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      currentQuestions.forEach(q => {
+        const group = document.createElement('div');
+        group.className = 'field-group';
+        group.innerHTML = `<label>${q.question}</label><select id="q_${q.key}">` +
+          q.options.map(o => `<option value="${o}"${o === q.default ? ' selected' : ''}>${o}</option>`).join('') +
+          `</select>`;
+        container.appendChild(group);
+      });
+
+      showPanel('preferences-panel');
+    }
+
+    // ── Generate ─────────────────────────────────────────────────────────────
+
+    async function generateImage() {
+      document.getElementById('result-original').src = originalImageSrc;
+      document.getElementById('result-enhanced').classList.add('hidden');
+      document.getElementById('result-placeholder').classList.remove('hidden');
+      document.getElementById('result-actions').classList.add('hidden');
+      showPanel('result-panel');
+
+      const formData = new FormData();
+      currentQuestions.forEach(q => {
+        const el = document.getElementById(`q_${q.key}`);
+        if (el) formData.append(q.key, el.value);
+      });
+      const additional = document.getElementById('additional-input').value.trim();
+      if (additional) formData.append('additional', additional);
+
+      try {
+        const res = await fetch(`/generate/${currentSessionId}`, {
+          method: 'POST',
+          body: formData,
+        });
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.detail || 'Generation failed');
+        }
+        const data = await res.json();
+        showResult(data.result_url);
+      } catch (err) {
+        document.getElementById('result-placeholder').innerHTML =
+          `<p class="error">Error: ${err.message}</p>`;
+      }
+    }
+
+    function showResult(url) {
+      const img = document.getElementById('result-enhanced');
+      img.src = url + '?t=' + Date.now();
+      img.onload = () => {
+        document.getElementById('result-placeholder').classList.add('hidden');
+        img.classList.remove('hidden');
+        const dl = document.getElementById('download-btn');
+        dl.href = url;
+        document.getElementById('result-actions').classList.remove('hidden');
+      };
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
+    function showPanel(id) {
+      document.querySelectorAll('.panel').forEach(p => {
+        p.classList.remove('active');
+        p.classList.add('hidden');
+      });
+      const panel = document.getElementById(id);
+      panel.classList.remove('hidden');
+      panel.classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    function resetToUpload() {
+      currentSessionId = null;
+      currentQuestions = [];
+      originalImageSrc = null;
+      document.getElementById('file-input').value = '';
+      document.getElementById('additional-input').value = '';
+      document.getElementById('upload-status').className = 'status hidden';
+      showPanel('upload-panel');
+    }
+  </script>
+
+</body>
+</html>
