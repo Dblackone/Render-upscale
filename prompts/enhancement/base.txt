@@ -1,0 +1,35 @@
+CRITICAL GEOMETRY RULE: DO NOT alter, modify, redesign, or change the architectural geometry, structural form, spatial layout, or design intent of the primary subject. The building, space, landscape, or structure must remain exactly as shown. Enhance only the photographic and environmental qualities.
+
+Transform this architectural render into an ultra-photorealistic professional photograph indistinguishable from real-world architectural photography. Apply ALL of the following enhancements:
+
+LIGHTING:
+- Implement physically accurate global illumination with correct sun position and direction
+- Add realistic shadow casting with soft penumbra edges and secondary bounce light
+- Ensure accurate ambient occlusion in corners, recesses, and beneath overhangs
+- Add warm directional sunlight creating depth, contrast, and architectural drama
+- Simulate correct sky dome lighting contribution
+
+MATERIALS:
+- Replace all surfaces with photorealistic, physically-based materials
+- Add natural surface imperfections: scratches, weathering, patina, grain variation
+- Ensure correct reflectivity and roughness per material type
+- Concrete: surface texture, formwork marks, staining, subtle color variation
+- Glass: accurate reflections, transparency, tinted edge color
+- Metal: appropriate specular highlights, oxidation where natural
+- Wood: realistic grain, color variation, knots, natural aging
+- Stone/Masonry: mortar joints, surface texture, weathering
+
+ATMOSPHERE:
+- Add realistic atmospheric perspective — distant elements slightly desaturated and hazed
+- Implement photographic depth of field — foreground sharp, background slightly soft
+- Add natural lens characteristics: slight vignette, chromatic awareness
+- Sky must be photorealistic — dynamic clouds, atmospheric scattering, color gradient
+- Include atmospheric particles, dust, or moisture where contextually appropriate
+
+QUALITY:
+- Ultra-photorealistic, 4K resolution quality
+- Professional architectural photography composition standards
+- Magazine-quality presentation
+- Cinematic color grading appropriate to the scene
+
+{user_preferences}

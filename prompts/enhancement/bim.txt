@@ -1,0 +1,28 @@
+BIM AND TECHNICAL RENDER ENHANCEMENT:
+
+MATERIAL APPLICATION:
+- Apply photorealistic materials to all building elements based on their likely construction
+- Structural elements: concrete with formwork texture, steel with appropriate finish
+- Envelope: glazing, cladding, roofing applied with realistic material properties
+- Interior elements: flooring, ceiling, wall finishes appropriate to space type
+
+SPATIAL CLARITY:
+- Enhance spatial hierarchy — primary spaces more prominent than secondary
+- Lighting differentiates inside from outside, public from private
+- Material contrast helps read spatial organization clearly
+
+CONTEXT AND SETTING:
+- Add a realistic site context: sky, ground plane, basic landscape
+- Neighboring buildings or landscape as a simple, non-distracting background
+- Ground plane shows realistic surface material
+
+LIGHTING FOR LEGIBILITY:
+- Primary lighting direction helps read massing and three-dimensional form
+- Interior illumination visible through glazing
+- Shadows clarify form and depth
+
+HUMAN SCALE:
+- Add 2-5 people at key locations to establish scale
+- People are positioned to convey how spaces are intended to be used
+
+NOTE: Preserve all structural, spatial, and geometric information completely. This is a design communication tool. The goal is to make the design legible and compelling without redesigning anything. Improve presentation quality only.
