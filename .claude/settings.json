@@ -1,13 +1,10 @@
 {
   "mcpServers": {
     "nanobanana": {
-      "command": "uvx",
-      "args": ["nanobanana-mcp-server@latest"],
-      "env": {
-        "GEMINI_API_KEY": "${GEMINI_API_KEY}",
-        "IMAGE_OUTPUT_DIR": "./images/enhanced-renders",
-        "NANOBANANA_MODEL": "auto",
-        "LOG_LEVEL": "INFO"
+      "type": "http",
+      "url": "https://mcp.pixa.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${PIXA_API_KEY}"
       }
     }
   }

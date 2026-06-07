@@ -9,22 +9,21 @@ failed. Running a tool returns "MCP server unavailable".
 
 **Causes and fixes**:
 
-1. **uvx not found**
-   ```
-   Error: command not found: uvx
-   ```
-   Install uv: `curl -LsSf https://astral.sh/uv/install.sh | sh`
-   Then restart your terminal and Claude Code.
-
-2. **uvx not on PATH visible to Claude Code**
-   Claude Code may use a different PATH than your terminal. Check:
+1. **No network access to mcp.pixa.com**
+   The server is remote — confirm outbound HTTPS is not blocked:
    ```bash
-   which uvx
-   echo $PATH
+   curl -I https://mcp.pixa.com/mcp
    ```
-   If uvx is in a non-standard location (e.g. `~/.cargo/bin` or
-   `~/.local/bin`), add it to your system PATH in `~/.bashrc` or
-   `~/.zshrc`, then restart Claude Code fully.
+   A `401 Unauthorized` response means the host is reachable (key issue,
+   not network). A timeout or `connection refused` means a firewall or
+   proxy is blocking the request.
+
+2. **PIXA_API_KEY not in environment**
+   Claude Code reads env vars from the shell it was launched from. Export
+   the key before opening Claude Code:
+   ```bash
+   export PIXA_API_KEY=your_key_here
+   ```
 
 3. **settings.json syntax error**
    Validate the JSON:
@@ -40,34 +39,32 @@ failed. Running a tool returns "MCP server unavailable".
 **Symptom**: Tool calls fail with authentication errors.
 
 ```
-Error: API_KEY_INVALID
-Error: PERMISSION_DENIED: API key not valid
-Error: 400 Bad Request: missing GEMINI_API_KEY
+Error: 401 Unauthorized
+Error: 403 Forbidden
+Error: Missing or invalid Authorization header
 ```
 
 **Fixes**:
 
-1. Check that `.env` exists and contains `GEMINI_API_KEY`:
+1. Check that `.env` exists and contains `PIXA_API_KEY`:
    ```bash
-   grep GEMINI_API_KEY .env
+   grep PIXA_API_KEY .env
    ```
 
-2. Confirm the key is not the placeholder value from `.env.example`:
+2. Confirm the key is not the placeholder from `.env.example`:
    ```
-   GEMINI_API_KEY=your_gemini_api_key_here   ← THIS IS WRONG
-   GEMINI_API_KEY=AIzaSyAbc123...            ← This is correct
+   PIXA_API_KEY=your_pixa_api_key_here   ← THIS IS WRONG
+   PIXA_API_KEY=px_abc123...             ← This is correct
    ```
 
-3. Confirm Claude Code is loading your `.env`. Claude Code reads
-   environment variables from the shell session it was launched from.
-   Export the variable before launching:
+3. Export the variable before launching Claude Code:
    ```bash
-   export GEMINI_API_KEY=$(grep GEMINI_API_KEY .env | cut -d= -f2)
+   export PIXA_API_KEY=$(grep PIXA_API_KEY .env | cut -d= -f2)
    ```
-   Or load `.env` into your shell: `source .env` then relaunch Claude Code.
+   Or load your entire `.env`: `source .env` then relaunch Claude Code.
 
-4. Verify the key is active in Google AI Studio:
-   https://aistudio.google.com/app/apikey
+4. Verify the key is active in your Pixa account dashboard at
+   https://pixa.com
 
 ---
 
@@ -188,20 +185,6 @@ Error: Image dimensions exceed maximum: 8192x8192
 
 ---
 
-## uvx Not Found (Windows)
-
-**Symptom**: `uvx` works in PowerShell but not when launched from Claude
-Code or another GUI.
-
-**Fix**: Add the uv bin directory to your system PATH (not just user PATH):
-
-1. Open System Properties > Environment Variables.
-2. Under System Variables, edit `Path`.
-3. Add: `%USERPROFILE%\.local\bin` (or wherever uv was installed).
-4. Restart Claude Code and any open terminals.
-
----
-
 ## Enhanced Render Looks Different from Original
 
 **Symptom**: The model has changed building geometry, removed architectural
@@ -245,11 +228,8 @@ Reset to `LOG_LEVEL=INFO` after diagnosis.
 
 ## Still Stuck?
 
-1. Check `nanobanana-mcp-server` issues:
-   https://github.com/zhongweili/nanobanana-mcp-server/issues
+1. Check Pixa status: https://pixa.com
 
-2. Check Google AI Studio status:
-   https://status.cloud.google.com/
+2. Verify your Pixa API key is active in your account dashboard.
 
-3. Verify your Gemini API key is active and not expired:
-   https://aistudio.google.com/app/apikey
+3. File an issue or contact Pixa support if the server endpoint is down.
