@@ -12,14 +12,14 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 # Models
 CLAUDE_MODEL = "claude-opus-4-8"
-DALLE_MODEL = "dall-e-3"
+DALLE_MODEL = "gpt-image-1"   # supports images.edit with high quality
 
-# DALL-E generation settings
-DALLE_QUALITY = "hd"
-DALLE_DEFAULT_SIZE = "1792x1024"
+# Image generation settings
+DALLE_QUALITY = "high"
+DALLE_DEFAULT_SIZE = "1536x1024"
 DALLE_SIZES = {
-    "landscape": "1792x1024",
-    "portrait": "1024x1792",
+    "landscape": "1536x1024",
+    "portrait": "1024x1536",
     "square": "1024x1024",
 }
 

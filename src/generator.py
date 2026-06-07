@@ -55,6 +55,8 @@ def generate_enhanced(
 
     prepared = _prepare_image(image_path)
 
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
     with open(prepared, "rb") as img_file:
         response = client.images.edit(
             model=config.DALLE_MODEL,
@@ -62,11 +64,11 @@ def generate_enhanced(
             prompt=prompt,
             n=1,
             size=chosen_size,
+            quality=config.DALLE_QUALITY,
         )
 
-    # The response contains a URL or b64_json — handle both
+    # gpt-image-1 always returns b64_json; dall-e-2 may return url
     result = response.data[0]
-    output_path.parent.mkdir(parents=True, exist_ok=True)
 
     if hasattr(result, "b64_json") and result.b64_json:
         img_bytes = base64.b64decode(result.b64_json)
@@ -75,7 +77,7 @@ def generate_enhanced(
         import urllib.request
         urllib.request.urlretrieve(result.url, output_path)
     else:
-        raise RuntimeError("DALL-E response contained neither b64_json nor url.")
+        raise RuntimeError("Image API response contained neither b64_json nor url.")
 
     # Clean up temp PNG if we created one
     if prepared != image_path and prepared.exists():
