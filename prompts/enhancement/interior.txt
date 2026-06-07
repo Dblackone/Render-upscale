@@ -1,0 +1,31 @@
+INTERIOR ARCHITECTURAL ENHANCEMENT:
+
+LIGHTING HIERARCHY:
+- Establish natural daylight as primary light source — window light creates soft, directional illumination
+- Layer artificial lighting: ambient, task, and accent lighting working together
+- Realistic light spill and bounce — light from windows should illuminate adjacent surfaces
+- Shadows cast by furniture and objects must be soft, accurate, and grounded
+- Ceiling lighting should create natural hot spots and gradient falloff
+- Avoid flat, even illumination — create lighting depth and atmosphere
+
+MATERIALS AND SURFACES:
+- Floor materials (timber, stone, carpet, concrete) must show realistic surface texture and reflectivity
+- Walls show paint texture, plaster variation, subtle sheen
+- Joinery and furniture materials — timber grain, fabric weave, leather texture, metal finishes
+- All surfaces show appropriate scale of detail
+
+FURNITURE AND OBJECTS:
+- Furniture appears solidly constructed with correct weight and material
+- Soft furnishings (cushions, rugs, curtains) show natural draping, folds, and gravity
+- Decorative objects, books, plants — add lived-in character
+- Styling objects add personality and scale reference
+
+ATMOSPHERE AND MOOD:
+- Photographic depth of field — nearest objects slightly soft, main space sharp, background fades
+- Warm, inviting color temperature for residential; clean, crisp for commercial
+- Window views show realistic exterior environment
+
+HUMAN PRESENCE (if requested):
+- 1-3 people naturally occupying the space
+- Activities that match the space type (reading, dining, working)
+- Correctly scaled to furniture and space

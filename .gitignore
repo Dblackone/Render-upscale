@@ -1,2 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Environment
 .env
 *.env
+
+# Generated images (keep folder structure, not content)
+images/raw-renders/*
+images/work-in-progress/*
+images/enhanced-renders/*
+images/final-deliverables/*
+
+# IDE
+.vscode/
+.idea/
+*.swp
